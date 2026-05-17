@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken")
 
 const app = express();
 const path = require("path");
+const { authMiddleware } = require("./Middleware");
 
 app.use(express.json())
 
@@ -76,40 +77,18 @@ app.post("/signin", (req, res) => {
 })
 
 //create notes - Authenticated endpoint
-app.post("/notes", (req, res) => {
+app.post("/notes", authMiddleware ,(req, res) => {
 
     // check if the user sent right headers, extraact who the user is from header 
-    const token = req.headers.token
 
-    if(!token) {
-        res.status(403).send({
-            message : "You are not logged in"
-        })
+    const username = req.username
 
-        return;
-    }
-
-    // if user sended us the token then verify them
-
-    const decoded = jwt.verify(token, "arun123")
-
-    const username = decoded.username; // here we got the username
-
-    if(!username) {
-        res.status(403).send({
-            message : "Malformed token"
-        })
-        return;
-    }
-
-    const note = req.body.note;
-
-    notes.push({note, username})
 
     res.json({
         message : "Done!"
     })
 
+    
 })
 
 app.get("/", (req, res) => {
