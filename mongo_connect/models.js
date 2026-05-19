@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 // mongoose schema and model object
 
-mongoose.connect("mongodb+srv://arun:arun1212@100xapps.jo66fd0.mongodb.net/todo")
+mongoose.connect("")
 
 const Schema = mongoose.Schema;
 
