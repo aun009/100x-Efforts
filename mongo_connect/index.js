@@ -3,6 +3,8 @@ const express = require("express")
 const { authMiddleWare } = require("./middleware")
 const jwt = require("jsonwebtoken")
 
+const { todoModel, userModel } = require("./models")
+
 
 const app = express()
 
@@ -14,15 +16,24 @@ let CURR_TODOS_ID = 1;
 const USERS = []
 const TODOS = []
 
-app.post("/signup", (req, res) => {
+app.post("/signup", async (req, res) => {
     const username = req.body.username
     const password = req.body.password
 
-    const userExist = USERS.find(u => u.username === username);
+    // const userExist = USERS.find(u => u.username === username);
+    const userExist = await userModel.findOne({
+        username : username,
+        password : password
+    })
 
     if(!userExist) {
-        USERS.push({
-            id : CURR_USER_ID++,
+        // USERS.push({
+        //     id : CURR_USER_ID++,
+        //     username : username,
+        //     password : password
+        // })
+
+        const newUser = await userModel.create({
             username : username,
             password : password
         })
@@ -30,7 +41,7 @@ app.post("/signup", (req, res) => {
         
 
         res.json({
-            message : "User created successfully"
+            message : newUser._id
         })
     }
 
