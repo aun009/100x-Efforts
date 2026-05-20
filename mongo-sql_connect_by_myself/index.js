@@ -8,7 +8,7 @@ const mongoose = require("mongoose")
 
 
 const pool = new Pool({
-    connectionString : "postgresql://neondb_owner:npg_E6lyOPQneBb3@ep-falling-pine-apibwcll.c-7.us-east-1.aws.neon.tech/neondb?sslmode=require"
+    connectionString : ""
 })
 
 // mongoose.connect("")
