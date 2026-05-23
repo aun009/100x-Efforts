@@ -1,0 +1,22 @@
+{
+  "name": "orm",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/node": "^25.9.1",
+    "prisma": "6",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@prisma/client": "6",
+    "@types/express": "^5.0.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
+  }
+}

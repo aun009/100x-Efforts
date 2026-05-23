@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<script>
+    async function signIn() {
+        const username = document.getElementById("username").value
+        const password = document.getElementById("password").value
+
+        const response = await axios.post("http://localhost:3002/signin", {
+            username, password
+        })
+
+        console.log(response.data.token);
+        
+
+        // we will get the token in response, and challenge is to store them in the browser
+        const token = response.data.token
+
+        localStorage.setItem("token", token)
+
+        console.log("token stored");
+        
+
+
+        window.location = '/'
+
+    }
+</script>
+<body>
+    <input id="username" type="text" placeholder="Enter username">
+    <input id="password" type="password" placeholder="Enter password">
+    <button onclick="signIn()">Sign In</button>
+</body>
+</html>
