@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes App</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+</head>
+<body>
+    <div style="display: flex;">
+        <div id="notes">
+            Loading...
+        </div>
+
+        <div>
+            <input id="note" type="text" placeholder="Enter your task">
+            <button onclick="saveNote()">Create a new note</button>
+
+            
+        </div>
+    </div>
+
+    <script>
+
+
+        async function getNotes() {
+            const response = await axios.get("http://localhost:3002/notes", {
+                headers : {
+                    token : localStorage.getItem("token")
+                }
+            })
+            let notes = response.data.notes;
+            console.log(response.data.notes);
+
+            document.getElementById("notes").innerHTML = "";
+            
+            for(let i=0; i<notes.length; i++) {
+                const noteNode = document.createElement("div");
+                noteNode.innerHTML = notes[i].note;
+                document.getElementById("notes").appendChild(noteNode);
+            }
+        }
+
+        async function saveNote() {
+
+            const noteData = document.getElementById("note").value;
+
+            const note = await axios.post("http://localhost:3002/notes", {
+                note : noteData
+            }, {
+                headers : {
+                    token : localStorage.getItem("token")
+                }
+            })
+
+            const noteNode = document.createElement("div");
+            noteNode.innerHTML = noteData;
+            document.getElementById("notes").appendChild(noteNode);
+
+            document.getElementById("note").value = "";
+        }
+
+        getNotes()
+    </script>
+</body>
+</html>
