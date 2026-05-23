@@ -4,18 +4,36 @@ const express = require("express")
 const app = express()
 const bcrypt = require("bcrypt")
 const { Pool } = require("pg")
+const z = require("zod")
 app.use(express.json())
 
 const pool = new Pool({
-    connectionString : "postgresql://neondb_owner:npg_E6lyOPQneBb3@ep-falling-pine-apibwcll.c-7.us-east-1.aws.neon.tech/neondb?sslmode=require"
+    connectionString : ""
+})
+
+
+const SignupSchema = z.object({
+    username : z.string().min(6),
+    password : z.string().min(6),
+    email : z.email()
 })
 
 
 
 app.post("/signup", async (req, res) => {
-    const username = req.body.username
-    const email = req.body.email
-    const password = req.body.password
+
+    const { data, success, error } = SignupSchema.safeParse(req.body);
+
+    if(!success) {
+        res.status(403).json({
+            message : "Incorrect Inputs", error : JSON.parse(error)
+        })
+        return;
+    }
+
+    const username = data.username
+    const email = data.email
+    const password = data.password
     const hashedPassword = await bcrypt.hash(password, 10)
 
 
